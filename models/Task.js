@@ -1,7 +1,7 @@
 import mongoose, {Schema} from "mongoose";
 const taskSchema = new  mongoose.Schema(
     {
-        name:{
+        title:{
             type: String,
             required:[ true, "Name of task is required"],
             trim: true
@@ -11,11 +11,30 @@ const taskSchema = new  mongoose.Schema(
             required:[ true, "Description of task is required"],
         },
 
-        category:{
+        label:{ // label here represents the category of each task
             type: mongoose.Schema.Types.ObjectId,
-            ref: "TaskCategory",
-            required: [true, "Category of task is required"]
-            
+            ref: "label",
+            required: [true, "label of task is required"]
+
+        },
+
+        priority:{
+            type: String,
+            enum: ['low', 'medium', 'high'],
+            default: 'medium'
+        },
+        createdAt:{
+            type: Date,
+            default: Date.now,
+        },
+
+        dueDate:{ // represents the deadline of the task
+            type: Date,
+            required: true,
         }
+    },
+     {
+        timestamps: true,
+        toJSON:{virtuals: true}
     }
 )
