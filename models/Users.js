@@ -20,6 +20,12 @@ const userSchema = new mongoose.Schema({
         type: String
     },
 
+    createdAt: {
+        type: Date,
+        default: Date.now(),
+
+    },
+
 },{
     timestamps: true,
     toJSON:{virtuals: true}
