@@ -1,4 +1,4 @@
-import User from "../models/Users"
+import User from "../models/Users.js"
 import bcrypt from 'bcrypt'
 
 
@@ -15,12 +15,12 @@ export const createUser = async(req, res) =>{
 
         else{
             const salt  = await  bcrypt.genSalt(10)
-            hashPassword = await bcrypt.hash(password, salt)
+           const  hashPassword = await bcrypt.hash(password, salt)
             const user  = await User.create({
                 firstname,
                 lastname,
                 email,
-                password: hasdPassword,
+                password: hashPassword,
 
             })
             res.json({
@@ -30,7 +30,7 @@ export const createUser = async(req, res) =>{
             })
         }
     }catch(err){
-        res.json(error.message)
+        res.json(err.message)
     }
     
 
