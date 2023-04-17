@@ -35,3 +35,31 @@ export const createUser = async(req, res) =>{
     
 
 }
+
+export const loginUser  =  async(req, res) => {
+    const {email, password} = req.body
+    try{
+        const IsUserFound =  await User.findOne({email})
+        if(!IsUserFound) {
+            return res.json({message: "User  not found"})
+        }
+        // get password
+        const isPasswordCorrect  = await bcrypt.compare(password, IsUserFound.password)
+        if(!isPasswordCorrect) {
+            return res.json({message: "Wrong password"})
+        }
+        request.json({
+            status: "success",
+            data:{
+                firstname: IsUserFound.firstname,
+                lastname: IsUserFound.lastname,
+                email: IsUserFound.email,
+                token: generateToken(IsUserFound._id)
+            }
+        })
+
+    }
+    catch (err) {
+        res.json(err.message)
+    }
+}
