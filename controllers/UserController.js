@@ -63,3 +63,18 @@ export const loginUser  =  async(req, res) => {
         res.json(err.message)
     }
 }
+
+export const displayAllUsers =  async(req, res) => {
+    try{
+        const users = await User.find({})
+        if(users){
+            res.json({
+                status: "success",
+                data: users
+            })
+        }
+    }catch(err){
+        res.json(err.message)
+    }
+}
+
