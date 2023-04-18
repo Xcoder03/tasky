@@ -1,5 +1,8 @@
 import User from "../models/Users.js"
 import bcrypt from 'bcrypt'
+import generateToken  from "../utils/generateToken.js"
+import { obtainToken } from "../utils/obtainToken.js"
+import { request } from "express"
 
 
 export const createUser = async(req, res) =>{
@@ -43,14 +46,17 @@ export const loginUser  =  async(req, res) => {
         if(!IsUserFound) {
             return res.json({message: "User  not found"})
         }
+
+
         // get password
         const isPasswordCorrect  = await bcrypt.compare(password, IsUserFound.password)
         if(!isPasswordCorrect) {
             return res.json({message: "Wrong password"})
         }
-        request.json({
+
+        res.json({
             status: "success",
-            data:{
+            data: {
                 firstname: IsUserFound.firstname,
                 lastname: IsUserFound.lastname,
                 email: IsUserFound.email,
