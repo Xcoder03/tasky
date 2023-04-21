@@ -2,7 +2,10 @@ import User from "../models/Users.js"
 import bcrypt from 'bcrypt'
 import generateToken  from "../utils/generateToken.js"
 import { obtainToken } from "../utils/obtainToken.js"
+import crypto from 'crypto'
+import sendEmail  from "../utils/sendEmail.js"
 import { request } from "express"
+import findToken from "../utils/sendEmail.js"
 
 
 export const createUser = async(req, res) =>{
@@ -71,6 +74,7 @@ export const loginUser  =  async(req, res) => {
 }
 
 export const displayAllUsers =  async(req, res) => {
+
     try{
         const users = await User.find({})
         if(users){
@@ -82,5 +86,19 @@ export const displayAllUsers =  async(req, res) => {
     }catch(err){
         res.json(err.message)
     }
+}
+
+export const passwordReset = async(req, res) => {
+const  user = await User.findOne({email})
+if(!user){
+    throw new Error("User does not exist")
+}
+
+  const token= obtainToken(req)
+  let resetToken = crypto.randomBytes(32).toString("hex");
+  const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
+  sendEmail(user.email,"Password Reset Request",{name: user.firstname,link: link,},"./template/requestResetPassword.handlebars");
+  return link;
+
 }
 
