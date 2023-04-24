@@ -88,17 +88,26 @@ export const displayAllUsers =  async(req, res) => {
     }
 }
 
-export const passwordReset = async(req, res) => {
-const  user = await User.findOne({email})
-if(!user){
-    throw new Error("User does not exist")
-}
 
-  const token= obtainToken(req)
-  let resetToken = crypto.randomBytes(32).toString("hex");
-  const link = `${clientURL}/passwordReset?token=${resetToken}&id=${user._id}`;
-  sendEmail(user.email,"Password Reset Request",{name: user.firstname,link: link,},"./template/requestResetPassword.handlebars");
-  return link;
-
+export const deleteUser = async(req, res) => {
+    const {email} = req.body
+    try {
+        const IsUserFound =  await User.findOneAndDelete({email})
+       if (IsUserFound) {  
+           res.json({
+            status: "success",
+            message: `account with email ${req.body.email} has been deleted`
+           })
+       }
+       else {
+        res.json({
+            status: "failed",
+            message: `account with email ${req.body.email} doesnt exist`
+           })
+       }
+        
+    } catch (error) {
+        res.json(error.message)
+    }
 }
 
