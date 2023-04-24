@@ -73,6 +73,39 @@ export const loginUser  =  async(req, res) => {
     }
 }
 
+export const updateUser = async(req, res) => {
+    const{firstname, lastname} = req.body
+    try {
+        const findUser = await User.findById(req.params.id)
+        if(!findUser){
+            return res.json({
+                status:"error",
+                message:"record not found"
+            })
+        }
+
+        const foundUser = await User.findByIdAndUpdate(req.params.id,{
+            $set:{
+                firstname: req.body.firstname,
+                lastname: req.body.lastname
+            }
+            
+        },
+        {
+            new: true
+        })
+
+        res.json({
+            status:"success",
+            data:"record updated successfully"
+        })
+        
+    } catch (error) {
+        res.json(error.message)
+    }
+    
+}
+
 export const displayAllUsers =  async(req, res) => {
 
     try{
