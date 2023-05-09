@@ -19,6 +19,12 @@ const userSchema = new mongoose.Schema({
     profilePhoto: {
         type: String
     },
+    labels:[
+        {
+            type:mongoose.Schema.Types.ObjectId,
+            ref: "Label",
+        }
+    ],
 
     tasks:[
         {
