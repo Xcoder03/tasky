@@ -10,6 +10,7 @@ app.use(express.json())
 
 const PORT = process.env.PORT || 8080;
 app.use("/api/v1/users", userRoutes)
+app.use("/api/v1/label", labelRoutes)
 
 
 app.listen(PORT, console.log(`Omor we are back  at port ${PORT} server don set.`))
