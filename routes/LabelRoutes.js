@@ -5,7 +5,7 @@ import { isLogin } from "../middlewares/isLogin.js";
 const labelRoutes = express.Router();
 // post
 
-postRoutes.post("/createLabel", isLogin)
+labelRoutes.post("/createLabel", isLogin, createLabel)
 
 
 export default labelRoutes;

@@ -1,12 +1,13 @@
 import dotenv from "dotenv"
 import express from  "express"
 import userRoutes from "./routes/UserRoutes.js"
+import labelRoutes from "./routes/LabelRoutes.js"
 import {database} from "./config/dbConnect.js"
 
 dotenv.config();
 database();
 const app = express();
-app.use(express)
+app.use(express.json)
 
 
 

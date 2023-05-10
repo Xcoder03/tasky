@@ -21,7 +21,7 @@ export const createLabel = async(req, res) =>{
             user:req.userAuth
         })
 
-        res.json({
+        return res.json({
             status: "success",
             data: label
         })
