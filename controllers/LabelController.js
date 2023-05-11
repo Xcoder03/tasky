@@ -8,24 +8,45 @@ export const createLabel = async(req, res) =>{
     const {name, color} = req.body
     try {
         const isNameExist = await Label.findOne({name})
+        const labelOwner = await User.findById(req.userAuth)
         if(isNameExist){
-            return res.json({
+            return  res.json({
                 status: "error",
                 message:  "Name already exists"
-            })
+            })  
         }
+        
+            const label = await Label.create({
+                name,
+                color,
+                user:req.userAuth
+            })
+    
+             res.json({
+                status: "success",
+                data: label
+            })
 
-        const label = await Label.create({
-            name,
-            color,
-            user:req.userAuth
-        })
+            labelOwner.labels.push(label)
+            await labelOwner.save()
+        
 
-        return res.json({
-            status: "success",
-            data: label
-        })
+   
      } catch (error) {
         res.json(error.message)   
     }
+}
+
+const seeAllLabel = async(req, res) => {
+
+    try {
+        const fetchLabels = await Label.find({user:req.params.id})
+        res.json({
+            status: "success",
+            data: fetchLabels,
+        })
+    } catch (err) {
+        res.json(err.message)
+    }
+
 }
