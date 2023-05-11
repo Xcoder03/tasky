@@ -37,10 +37,10 @@ export const createLabel = async(req, res) =>{
     }
 }
 
-const fetchAllLabel = async(req, res) => {
+export const fetchAllLabel = async(req, res) => {
 
     try {
-        const fetchLabels = await Label.find({user:req.params.id})
+        const fetchLabels = await Label.find({user: req.params.id})
         res.json({
             status: "success",
             data: fetchLabels,
