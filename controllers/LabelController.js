@@ -50,3 +50,24 @@ export const fetchAllLabel = async(req, res) => {
     }
 
 }
+
+export const getSingleLabel =  async(req, res) =>{
+    try {
+        const fetchSingleLabel = await Label.findById( req.params.id)
+        if (!fetchSingleLabel) {
+            res.json({
+                 status: "error",
+                 message: "label no found"
+            })
+            
+        }
+
+
+        res.json({
+           status: "success",
+           data: fetchSingleLabel,
+        })
+    } catch (error) {
+        res.json(error.message)
+    }
+}
