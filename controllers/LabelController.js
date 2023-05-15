@@ -53,7 +53,7 @@ export const fetchAllLabel = async(req, res) => {
 
 export const getSingleLabel =  async(req, res) =>{
     try {
-        const fetchSingleLabel = await Label.findById( req.params.id)
+        const fetchSingleLabel = await Label.findById(req.params.id)
         if (!fetchSingleLabel) {
             res.json({
                  status: "error",
@@ -66,6 +66,32 @@ export const getSingleLabel =  async(req, res) =>{
         res.json({
            status: "success",
            data: fetchSingleLabel,
+        })
+    } catch (error) {
+        res.json(error.message)
+    }
+}
+
+export const deleteLabel = async(req, res) => {
+    try {
+        const labelId = req.params.id;
+        const loggedUser = req.userAuth;
+
+        const label = await Label.findOne({
+            _id: mongoose.Types.ObjectId(labelId),
+            user: loggedUser
+        })
+
+        if (!label) {
+            return res.json({
+                status: "error",
+                message: "Label not found",
+            })
+        }
+        await label.delete();
+        response.json({
+            status: "success",
+            message: "Label deleted successfully"
         })
     } catch (error) {
         res.json(error.message)

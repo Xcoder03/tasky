@@ -84,7 +84,7 @@ export const updateUser = async(req, res) => {
             })
         }
 
-        const foundUser = await User.findByIdAndUpdate(req.params.id,{
+        const foundUser = await User.findByIdAndUpdate  (req.params.id,{
             $set:{
                 firstname: req.body.firstname,
                 lastname: req.body.lastname
