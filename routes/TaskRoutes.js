@@ -5,6 +5,6 @@ import { isLogin } from "../middlewares/isLogin.js";
 const TaskRoutes = express.Router();
  
 TaskRoutes.post("/createTask",isLogin, createTask);
-TaskRoutes.post("/user/:id",isLogin, fetchAllTask);
+TaskRoutes.get("/user/:id",isLogin, fetchAllTask);
 
 export default TaskRoutes;
