@@ -12,10 +12,7 @@ const  labelSchema = new mongoose.Schema(
             trim: true,
         },
 
-        tasks: [{
-            type: Schema.Types.ObjectId,
-            ref: 'Task',
-        }],
+       
 
         createdAt:{
             type: Date,
