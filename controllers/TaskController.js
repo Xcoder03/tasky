@@ -35,3 +35,15 @@ export const createTask = async(req,res) => {
     res.json(error.message);
   }
 }
+
+export const fetchAllTask = async (req, res) => {
+    try {
+        const fetchTasks = await Task.find({user: req.params.id})
+        res.json({
+            status: "sucessful",
+            data: fetchTasks,
+        })
+    } catch (error) {
+        res.json(err.message)
+    }
+}
