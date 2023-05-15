@@ -2,6 +2,7 @@ import dotenv from "dotenv"
 import express from  "express"
 import userRoutes from "./routes/UserRoutes.js"
 import labelRoutes from "./routes/LabelRoutes.js"
+import taskRoutes from "./routes/TaskRoutes.js"
 import {database} from "./config/dbConnect.js"
 
 dotenv.config();
