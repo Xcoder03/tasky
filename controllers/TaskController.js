@@ -5,7 +5,7 @@ import Task from "../models/Task.js";
 
 
 export const createTask = async(req,res) => {
-  const {title, description, label, priority, dueDate} = req.body;
+  const {title, description, label, priority, dueDate, completed} = req.body;
   try {
     const taskOwner = await User.findById(req.userAuth)
     if(!taskOwner) {
@@ -21,6 +21,7 @@ export const createTask = async(req,res) => {
         label,
         priority,
         dueDate,
+        completed,
         user: taskOwner._id,
     })
 
