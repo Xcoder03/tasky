@@ -44,3 +44,5 @@ const taskSchema = new  mongoose.Schema(
         toJSON:{virtuals: true}
     }
 )
+
+export default Task
