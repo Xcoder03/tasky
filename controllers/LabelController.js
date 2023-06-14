@@ -9,13 +9,12 @@ export const createLabel = async(req, res) =>{
     try {
         const isNameExist = await Label.findOne({name})
         const labelOwner = await User.findById(req.userAuth)
-        if(labelOwner.labels.includes(isNameExist._id)){
+        if(labelOwner.labels.includes(isNameExist)){
             return  res.json({
                 status: "error",
                 message:  "Name already exists"
             })  
         }
-        
             const label = await Label.create({
                 name,
                 color,
