@@ -6,17 +6,19 @@ import generateToken from "../utils/generateToken.js";
 
 export const createLabel = async(req, res) =>{
     const {name, color} = req.body
+    const mainName = name.toLowerCase()
     try {
-        const isNameExist = await Label.findOne({name})
+        
         const labelOwner = await User.findById(req.userAuth)
-        if(labelOwner.labels.includes(isNameExist)){
+        const isNameExist = await Label.findOne({name:mainName,user:labelOwner._id})
+        if(isNameExist ){
             return  res.json({
                 status: "error",
                 message:  "Name already exists"
             })  
         }
             const label = await Label.create({
-                name,
+                name: mainName,
                 color,
                 user:req.userAuth
             })
@@ -32,7 +34,7 @@ export const createLabel = async(req, res) =>{
 
    
      } catch (error) {
-        res.json(error.message)   
+        res.json(error.message)
     }
 }
 

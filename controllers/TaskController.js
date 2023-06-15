@@ -1,6 +1,7 @@
 import User from  "../models/Users.js";
 import Label from "../models/Label.js";
 import Task from "../models/Task.js";
+import mongoose from "mongoose";
 
 
 
@@ -52,22 +53,30 @@ export const fetchAllTask = async (req, res) => {
 
 export const deleteTask = async (req, res) => {
     try {
-        const getTask = await Task.findOneAndDelete(req.params.id)
-        const taskOwner = await User.findById(req.userAuth)
-        if(taskOwner.tasks.includes(getTask._id)) {
-            res.json({
-                status: "error",
-                message: `${getTask.name} has been  deleted`
-            })
-        }
+        const taskOwner = req.userAuth
+        const getTask = req.params.id
+        const task = await Task.findOne({
+            _id: mongoose.Types.ObjectId(getTask),
+            user: taskOwner,
+          });
 
-        res.json({
-            status: "failed",
-            message: "task doesnt exist"
-        })
+          if (!task) {
+            res.json({
+                status: "error 404",
+                message: `Task not found `
+            })
+          }
+
+          await task.delete();
+    
+
+          res.json({
+            status: "success",
+            message: "task deleted successfully",
+          });
 
     } catch (error) {
-        res.json(err.message)
+        res.json(error.message)
     }
 }
 
@@ -110,9 +119,27 @@ const updateTask = async (req, res) => {
                 status:"success",
                 data:"record updated successfully"
             })
-        } catch (error) {
-            
+        } catch (err) {
+            res.json(err.message)
         }
+}
+
+ export const  checkCompletedTask = async(req, res) =>{
+    //fetch all completed tasks
+
+    const Tasks = await Task.find({user: req.params.id}).populate("title")
+
+    const completedTasks = Tasks.filter((task)=>{
+        return  task.completed === true;
+    })
+     try {
+      res.json({
+        status: "success",
+        data: completedTasks,
+      })
+     } catch (err) {
+        res.json(err.message)
+     }
 }
 
 // delete all tasks

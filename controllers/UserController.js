@@ -89,7 +89,7 @@ export const updateUser = async(req, res) => {
             $set:{
                 firstname: req.body.firstname,
                 lastname: req.body.lastname
-            }
+            }   
             
         },
         {
