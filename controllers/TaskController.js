@@ -56,7 +56,7 @@ export const deleteTask = async (req, res) => {
         const taskOwner = req.userAuth
         const getTask = req.params.id
         const task = await Task.findOne({
-            _id: mongoose.Types.ObjectId(getTask),
+            _id:  new mongoose.Types.ObjectId(getTask),
             user: taskOwner,
           });
 
@@ -67,7 +67,7 @@ export const deleteTask = async (req, res) => {
             })
           }
 
-          await task.delete();
+          await task.deleteOne();
     
 
           res.json({
