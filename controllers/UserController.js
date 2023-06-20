@@ -1,4 +1,5 @@
 import User from "../models/Users.js"
+import Token from "../models/Token.js"
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import generateToken  from "../utils/generateToken.js"
@@ -150,13 +151,21 @@ export const forgetPassword = async(req, res, next) => {
         const {email} = req.body
         const user = await User.findOne({email})
         if(!user){
-            return next(res.json({message: "User  not found"}))
+            return res.json({message: "User with email does not exist"})
         }
 
-    //Generate a reset token
+   // Generate a reset token
     const resetToken = jwt.sign({ userId: user._id }, process.env.JWT_KEY, {
         expiresIn: "1h",
       });
+
+    //   let token = await Token.findOne({userId: user._id})
+    //   if(!token){
+    //     token = await new Token({
+    //         userId: user._id,
+    //         token: crypto.randomBytes(32).toString('hex')
+    //     }).save()
+    //   }
       //set the rest token and its expiration on the user obj
       
     user.resetToken = resetToken;
@@ -173,7 +182,7 @@ export const forgetPassword = async(req, res, next) => {
       });
   
     }catch (error) {
-        next(res.json(error.message))
+        res.json(error.message)
 
     }
 }
@@ -208,7 +217,7 @@ export const resetPassword = async(req, res, next) => {
         await sendEmail(user.email, "Password Message", html);
 
     }catch (error) {
-        next(res.json(error.message))
+        res.json(error.message)
     } 
 }
 
