@@ -142,6 +142,25 @@ const updateTask = async (req, res) => {
      }
 }
 
+
+export const  checkUnCompletedTask = async(req, res) =>{
+    //fetch all completed tasks
+
+    const Tasks = await Task.find({user: req.params.id}).populate("title")
+
+    const unCompletedTasks = Tasks.filter((task)=>{
+        return  task.completed === false;
+    })
+     try {
+      res.json({
+        status: "success",
+        data: unCompletedTasks,
+      })
+     } catch (err) {
+        res.json(err.message)
+     }
+}
+
 // delete all tasks
 // update a  task
 // update a task category
