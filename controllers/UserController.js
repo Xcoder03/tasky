@@ -146,7 +146,7 @@ export const deleteUser = async(req, res) => {
     }
 }
 
-export const forgetPassword = async(req, res, next) => {
+export const forgetPassword = async(req, res) => {
     try{
         const {email} = req.body
         const user = await User.findOne({email})
