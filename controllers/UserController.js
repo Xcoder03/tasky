@@ -6,7 +6,7 @@ import generateToken  from "../utils/generateToken.js"
 import { obtainToken } from "../utils/obtainToken.js"
 import crypto from 'crypto'
 import sendEmail  from "../utils/sendEmail.js"
-import { request } from "express"
+
 
 
 
@@ -174,7 +174,7 @@ export const forgetPassword = async(req, res) => {
 
     const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
     const html = `<h3>RESET PASSWORD</h3><br/> <p>Below is the link to reset your password<br>This link only valid for 1 hour. please do not share with anyone<hr/><br/>click <strong> <a href="${resetUrl}">here</a> </strong>to reset your password</p><p>Having issues? kindly contact our support team</p> `;
-    await sendEmail(user.email, "Reset Your Password", html);
+    await sendEmail(email, "Reset Your Password", html);
     
     res.status(200).json({
         status: "success",
@@ -220,5 +220,7 @@ export const resetPassword = async(req, res, next) => {
         res.json(error.message)
     } 
 }
+
+
 
 
